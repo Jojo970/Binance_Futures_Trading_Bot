@@ -17,35 +17,6 @@ api_key_in = '' #Need your own here
 api_secret_in = '' #Need your own here
 
 
-#JSON messages that were sent to Stacked
-# AuthCode has been removed from the JSON messages
-openlong = {
-    "symbol": "LTC/USD",
-    "authCode": "",
-    "side": "buy",
-    "action": "open",
-    "equity": 100
-    }
-
-openshort = {
-    "symbol": "LTC/USD",
-    "authCode": "",
-    "side": "sell",
-    "action": "open",
-    "equity": 100
-    }
-
-closeall = {
-    "symbol": "LTC/USD",
-    "authCode": "",
-    "side": "all",
-    "action": "close"
-    }
-
-jsonlong = json.dumps(openlong)
-jsonshort = json.dumps(openshort)
-jsonclose = json.dumps(closeall)
-
 
 class Process: # TO READ MESSAGES FROM THE LIVE DATA SOCKET
     
@@ -257,7 +228,7 @@ while max_tries < 5:
                 lngpost = 'LONG TRADE EXECUTED AT: ' + str(round(lng_entry, 2)) + '\n' + "UTC TIME: " + buytime + '\n' + '\n' + 'POSITION CLOSED AT: ' + str(round(markprice, 2)) + '\n' + 'UTC TIME:' + selltime + '\n' + 'PNL %:' + lngpnl + '\n' + '$LTC $BTC #cryptocurrency'
                 twitterapi.PostUpdate(lngpost)
 
-            elif threshold == True:
+            elif threshold == True: #Trailing stop loss calculated here.
                 if price > lng_entry:
                     lngcall = price - (price * 0.03)
                     lng_entry = price
@@ -286,7 +257,7 @@ while max_tries < 5:
                 shortpost = 'SHORT TRADE EXECUTED AT: '+ str(round(shrt_entry, 2)) + '\n' + "UTC TIME: " + buytime + '\n' + '\n' + 'POSITION CLOSED AT: ' + str(round(markprice, 2)) + '\n' + 'UTC TIME: ' + selltime + '\n' + 'PNL %: ' + shrtpnl + '\n' + '$LTC $BTC #cryptocurrency'
                 twitterapi.PostUpdate(shortpost)
 
-            elif threshold == True:
+            elif threshold == True: #Trailing stop loss calculated here.
                 if price < shrt_threshold:
                     shrtcall = price + (price* 0.03)
                     shrt_entry = price
