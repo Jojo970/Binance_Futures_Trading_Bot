@@ -105,7 +105,6 @@ class GetBinanceClient(Process):
         self.USDT_balance = self.client.futures_account_balance() # CHECK BALANCE
         self.funds = float(self.USDT_balance[0]['balance'])
         self.funds_to_trade = self.funds * 0.05 # mulitply self.funds by percent of funds to use
-        self.current_price = self.client.futures_symbol_ticker(symbol= coin)
         self.stop_price = round(price + 0.5, 2)
         self.quantity = (self.funds_to_trade / price) # how many orders to send in
         self.trade_quantity = round(self.quantity, 3)
